@@ -1,0 +1,127 @@
+// Html
+<div class="buttons">
+
+  <h2>2a. Uber</h2>
+  <div class="button-wrapper">
+    <button class="uber-button">Request now</button>
+  </div>
+
+  <h2>2b. Amazon</h2>
+  <div class="button-wrapper">
+    <button class="amazon-button">Add to Cart</button>
+  </div>
+
+  <h2>2c. GitHub</h2>
+  <div class="button-wrapper">
+    <button class="github-button">Sign up</button>
+  </div>
+
+  <h2>2d. Bootstrap</h2>
+  <div class="button-wrapper">
+    <button class="bootstrap-get-started">Get started</button>
+    <button class="bootstrap-download">Download</button>
+  </div>
+
+  <h2>2e. LinkedIn</h2>
+  <div class="button-wrapper">
+    <button class="linkedin-apply">Apply on company website</button>
+    <button class="linkedin-save">Save</button>
+  </div>
+
+</div>
+
+
+
+
+// CSS
+
+body {
+  font-family: Arial, sans-serif;
+  background: #000;
+  color: #fff;
+  padding: 2rem;
+}
+
+.buttons h2 {
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+
+/* Uber Button */
+.uber-button {
+  background: transparent;
+  color: #fff;
+  border: 2px solid #fff;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Amazon Button */
+.amazon-button {
+  background: rgb(255, 216, 20);
+  color: #000;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 25px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* GitHub Button */
+.github-button {
+  background: rgb(46, 164, 79);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 25px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Bootstrap Buttons */
+.bootstrap-get-started {
+  background: rgb(121, 82, 179);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 16px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.bootstrap-download {
+  background: transparent;
+  color: rgb(108, 117, 125);
+  border: 1px solid rgb(108, 117, 125);
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* LinkedIn Buttons */
+.linkedin-apply {
+  background: rgb(10, 102, 194);
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 25px;
+  font-size: 16px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.linkedin-save {
+  background: transparent;
+  color: rgb(10, 102, 194);
+  border: 1px solid rgb(10, 102, 194);
+  border-radius: 20px;
+  padding: 10px 25px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+
