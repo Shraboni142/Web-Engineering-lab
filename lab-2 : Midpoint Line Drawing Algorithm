@@ -1,0 +1,199 @@
+//HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Midpoint Line Drawing with Mid-Line</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <h1>Midpoint Line Drawing Algorithm - Midline Result</h1>
+  <div class="input-area">
+    <div>
+      <strong>Line 1:</strong>
+      X0 <input type="number" id="x0" value="3" />
+      Y0 <input type="number" id="y0" value="2" />
+      X1 <input type="number" id="x1" value="17" />
+      Y1 <input type="number" id="y1" value="5" />
+    </div>
+    <div>
+      <strong>Line 2:</strong>
+      X2 <input type="number" id="x2" value="1" />
+      Y2 <input type="number" id="y2" value="1" />
+      X3 <input type="number" id="x3" value="5" />
+      Y3 <input type="number" id="y3" value="12" />
+    </div>
+    <button onclick="drawTwoLines()">Draw Lines</button>
+    <button onclick="drawMidpointLineBetweenLines()">Draw Midpoint Line</button>
+  </div>
+  <canvas id="canvas" width="800" height="500"></canvas>
+  <script src="script.js"></script>
+</body>
+</html>
+
+
+//CSS
+body {
+  background: #f4f9ff;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding: 20px;
+}
+
+h1 {
+  color: #004488;
+}
+
+.input-area {
+  margin-bottom: 15px;
+}
+
+.input-area input {
+  width: 50px;
+  margin: 0 5px;
+}
+
+canvas {
+  border: 2px solid #333;
+  background-color: #ffffff;
+  margin-top: 20px;
+}
+
+
+//JS
+
+const scale = 20;
+
+function drawTwoLines() {
+  const canvas = document.getElementById("canvas");
+  const ctx = canvas.getContext("2d");
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  drawGrid(ctx, canvas.width, canvas.height, scale);
+
+  const lines = [
+    {
+      x0: parseInt(document.getElementById("x0").value),
+      y0: parseInt(document.getElementById("y0").value),
+      x1: parseInt(document.getElementById("x1").value),
+      y1: parseInt(document.getElementById("y1").value),
+      color: "red",
+      label: "Line 1"
+    },
+    {
+      x0: parseInt(document.getElementById("x2").value),
+      y0: parseInt(document.getElementById("y2").value),
+      x1: parseInt(document.getElementById("x3").value),
+      y1: parseInt(document.getElementById("y3").value),
+      color: "blue",
+      label: "Line 2"
+    }
+  ];
+
+  lines.forEach(line =>
+    drawMidPointLine(
+      line.x0,
+      line.y0,
+      line.x1,
+      line.y1,
+      ctx,
+      line.color,
+      scale,
+      line.label
+    )
+  );
+}
+
+function drawMidpointLineBetweenLines() {
+  const canvas = document.getElementById("canvas");
+  const ctx = canvas.getContext("2d");
+
+  // Read original line values
+  const x0 = parseInt(document.getElementById("x0").value);
+  const y0 = parseInt(document.getElementById("y0").value);
+  const x1 = parseInt(document.getElementById("x1").value);
+  const y1 = parseInt(document.getElementById("y1").value);
+  const x2 = parseInt(document.getElementById("x2").value);
+  const y2 = parseInt(document.getElementById("y2").value);
+  const x3 = parseInt(document.getElementById("x3").value);
+  const y3 = parseInt(document.getElementById("y3").value);
+
+  // Calculate midpoint of each line
+  const mxStart = Math.round((x0 + x2) / 2);
+  const myStart = Math.round((y0 + y2) / 2);
+  const mxEnd = Math.round((x1 + x3) / 2);
+  const myEnd = Math.round((y1 + y3) / 2);
+
+  // Draw the midpoint-to-midpoint line
+  drawMidPointLine(mxStart, myStart, mxEnd, myEnd, ctx, "green", scale, "Midpoint Line");
+
+  // Label the points
+  ctx.fillStyle = "#000";
+  ctx.font = "12px Arial";
+  ctx.fillText("Mid Start", mxStart * scale + 2, myStart * scale - 2);
+  ctx.fillText("Mid End", mxEnd * scale + 2, myEnd * scale - 2);
+}
+
+function drawGrid(ctx, width, height, scale) {
+  ctx.strokeStyle = "#ddd";
+  for (let x = 0; x <= width; x += scale) {
+    ctx.beginPath();
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, height);
+    ctx.stroke();
+  }
+
+  for (let y = 0; y <= height; y += scale) {
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(width, y);
+    ctx.stroke();
+  }
+}
+
+function plotPixel(ctx, x, y, color, scale) {
+  ctx.fillStyle = color;
+  ctx.fillRect(x * scale, y * scale, scale, scale);
+}
+
+function drawMidPointLine(x0, y0, x1, y1, ctx, color, scale, label) {
+  let dx = Math.abs(x1 - x0);
+  let dy = Math.abs(y1 - y0);
+  let sx = x0 < x1 ? 1 : -1;
+  let sy = y0 < y1 ? 1 : -1;
+  let x = x0;
+  let y = y0;
+
+  ctx.fillStyle = "#000";
+  ctx.font = "12px Arial";
+  ctx.fillText(label + " Start", x * scale + 2, y * scale - 2);
+  ctx.fillText(label + " End", x1 * scale + 2, y1 * scale - 2);
+
+  plotPixel(ctx, x, y, color, scale);
+
+  if (dx > dy) {
+    let d = dy - dx / 2;
+    while (x !== x1) {
+      x += sx;
+      if (d < 0) {
+        d += dy;
+      } else {
+        y += sy;
+        d += dy - dx;
+      }
+      plotPixel(ctx, x, y, color, scale);
+    }
+  } else {
+    let d = dx - dy / 2;
+    while (y !== y1) {
+      y += sy;
+      if (d < 0) {
+        d += dx;
+      } else {
+        x += sx;
+        d += dx - dy;
+      }
+      plotPixel(ctx, x, y, color, scale);
+    }
+  }
+}
