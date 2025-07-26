@@ -1,0 +1,203 @@
+/HTML
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Search & Sort Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Searching and Sorting Algorithms</h1>
+
+  <div class="input-area">
+    <label>Input numbers:</label>
+    <div id="input-numbers"></div>
+    <input type="text" id="userInput" placeholder="Enter numbers 1-50 (comma separated)" />
+    <button onclick="loadInput()">Load</button>
+  </div>
+
+  <div id="message-area"></div>
+
+
+  <h2>Sorting Algorithms</h2>
+  <div class="button-area">
+    <button class="btn bubble" onclick="startSort('bubble')">Bubble Sort</button>
+    <button class="btn selection" onclick="startSort('selection')">Selection Sort</button>
+    <button class="btn insertion" onclick="startSort('insertion')">Insertion Sort</button>
+    <button class="btn merge" onclick="startSort('merge')">Merge Sort</button>
+    <button class="btn quick" onclick="startSort('quick')">Quick Sort</button>
+    <button class="btn counting" onclick="startSort('counting')">Counting Sort</button>
+    <button class="btn heap" onclick="startSort('heap')">Heap Sort</button>
+    <button class="btn radix" onclick="startSort('radix')">Radix Sort</button>
+    <button class="btn shell" onclick="startSort('shell')">Shell Sort</button>
+    <button class="btn bucket" onclick="startSort('bucket')">Bucket Sort</button>
+  </div>
+
+  <button id="back-btn" onclick="reset()">🔙 Back</button>
+
+  <div class="output-area">
+    <h3>Output:</h3>
+    <div id="output-numbers"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+
+
+/CSS
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f2f8fd;
+  color: #333;
+  padding: 2rem;
+  text-align: center;
+}
+
+h1 {
+  color: #0047ab;
+  margin-bottom: 1rem;
+}
+
+.input-area, .output-area {
+  margin: 1.5rem 0;
+}
+
+#input-numbers, #output-numbers {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 1rem 0;
+}
+
+#input-numbers div,
+#output-numbers div {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #000;
+  margin: 0.2rem;
+  line-height: 40px;
+  background: #fff;
+  font-weight: bold;
+}
+
+.button-area {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.btn {
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  min-width: 130px;
+}
+
+
+
+.bubble { background: #f44336; }
+.selection { background: #8bc34a; }
+.insertion { background: #00bfa5; }
+.merge { background: #607d8b; }
+.quick { background: #ffeb3b; color: #000; }
+.counting { background: #ff5722; }
+.heap { background: #03a9f4; }
+.radix { background: #cddc39; color: #000; }
+.shell { background: #e91e63; }
+.bucket { background: #9e9e9e; }
+
+#back-btn {
+  margin-top: 1rem;
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #222;
+  color: white;
+  border-radius: 6px;
+  display: none;
+}
+
+#message-area {
+  font-size: 1.1rem;
+  margin: 1rem 0;
+  min-height: 60px;
+}
+
+
+/JS
+
+let numbers = [];
+
+function loadInput() {
+  const input = document.getElementById("userInput").value;
+  numbers = input.split(",").map(n => parseInt(n.trim())).filter(n => !isNaN(n));
+  displayNumbers("input-numbers", numbers);
+  document.getElementById("message-area").innerText = "Input loaded successfully.";
+}
+
+function displayNumbers(containerId, arr, highlightIndex = -1) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = "";
+  arr.forEach((num, idx) => {
+    const div = document.createElement("div");
+    div.innerText = num;
+    if (idx === highlightIndex) div.style.backgroundColor = "yellow";
+    container.appendChild(div);
+  });
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function reset() {
+  displayNumbers("input-numbers", numbers);
+  document.getElementById("output-numbers").innerHTML = "";
+  document.getElementById("message-area").innerText = "";
+  document.getElementById("back-btn").style.display = "none";
+}
+
+// Placeholder search logic (expand each with real logic)
+async function startSearch(type) {
+  document.getElementById("message-area").innerText = `${type.toUpperCase()} search started...`;
+  document.getElementById("back-btn").style.display = "block";
+
+  for (let i = 0; i < numbers.length; i++) {
+    displayNumbers("input-numbers", numbers, i);
+    document.getElementById("message-area").innerText = `Checking number ${numbers[i]}...`;
+    await sleep(500);
+  }
+
+  document.getElementById("output-numbers").innerText = `Search "${type}" completed.`;
+}
+
+// Placeholder sort logic (expand each with real logic)
+async function startSort(type) {
+  document.getElementById("message-area").innerText = `${type.toUpperCase()} sort started...`;
+  document.getElementById("back-btn").style.display = "block";
+
+  let arr = [...numbers];
+  for (let i = 0; i < arr.length; i++) {
+    for (let j = 0; j < arr.length - i - 1; j++) {
+      displayNumbers("input-numbers", arr, j);
+      document.getElementById("message-area").innerText = `Comparing ${arr[j]} and ${arr[j + 1]}`;
+      if (arr[j] > arr[j + 1]) {
+        [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+        document.getElementById("message-area").innerText = `Swapped ${arr[j]} and ${arr[j + 1]}`;
+      }
+      await sleep(300);
+    }
+  }
+
+  displayNumbers("output-numbers", arr);
+  document.getElementById("message-area").innerText = `${type.toUpperCase()} sort completed.`;
+}
+
